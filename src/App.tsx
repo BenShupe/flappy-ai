@@ -1,30 +1,30 @@
 import { useState } from "react";
-import Canvas from "./components/Canvas"
-import ControlPanel from "./components/ControlPanel"
+import Canvas from "./components/Canvas";
+import ControlPanel from "./components/ControlPanel";
+import type { SimulationState } from "./types/SimulationState";
 
 function App() {
-
-  const [isRunning, setIsRunning] = useState(true);
-  const [speed, setSpeed] = useState(1);
+  const [simState, setSimState] = useState<SimulationState>({
+    isRunning: true,
+    speed: 0.01,
+    showDebug: false,
+  });
 
   return (
     <div className="min-h-screen bg-gray-700 flex flex-col justify-center items-center p-6">
       <Canvas
-        isRunning={isRunning}
-        speed={speed}
+        state={simState}
         width={600}
         height={600}
-        className={isRunning?"border-2 rounded-lg border-blue-400":"border-2 rounded-lg border-red-400"}
+        className={
+          simState.isRunning
+            ? "border-2 rounded-lg border-blue-400"
+            : "border-2 rounded-lg border-red-400"
+        }
       />
-      <ControlPanel
-        isRunning={isRunning}
-        setIsRunning={setIsRunning}
-        speed={speed}
-        setSpeed={setSpeed}
-      />
+      <ControlPanel state={simState} setState={setSimState} />
     </div>
-  )
+  );
 }
-
 
 export default App;

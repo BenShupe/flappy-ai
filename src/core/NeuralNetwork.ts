@@ -1,4 +1,4 @@
-export class NeuralNetwork {
+export default class NeuralNetwork {
   inputNodes: number;
   hiddenNodes: number;
   outputNodes: number;
@@ -60,5 +60,16 @@ export class NeuralNetwork {
     this.weightsHO = this.weightsHO.map(row => row.map(mutateValue));
     this.biasH = this.biasH.map(mutateValue);
     this.biasO = this.biasO.map(mutateValue);
+  }
+
+  copy(): NeuralNetwork {
+    const nn = new NeuralNetwork(this.inputNodes, this.hiddenNodes, this.outputNodes);
+
+    nn.weightsIH = this.weightsIH.map(row => [...row]);
+    nn.weightsHO = this.weightsHO.map(row => [...row]);
+    nn.biasH = [...this.biasH];
+    nn.biasO = [...this.biasO];
+
+    return nn;
   }
 };

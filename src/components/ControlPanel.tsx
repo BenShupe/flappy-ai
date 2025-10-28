@@ -1,20 +1,47 @@
-type props = {
-  isRunning: boolean;
-  setIsRunning: React.Dispatch<React.SetStateAction<boolean>>;
-  speed: number;
-  setSpeed: React.Dispatch<React.SetStateAction<number>>;
+import ToggleButton from "./ToggleButton"
+import type { SimulationState } from "../types/SimulationState";
+
+interface props {
+  state: SimulationState;
+  setState: React.Dispatch<React.SetStateAction<SimulationState>>;
 };
 
-function ControlPanel ({isRunning, setIsRunning, speed, setSpeed}:props) {
+const FAST_SPEED = 0.0015;
+const SLOW_SPEED = 0.001;
+
+export default function ControlPanel ({state, setState}:props) {
   return (
-    <div className="flex justify-evenly items-center mt-6 p-4 rounded-sm w-[600px] border-2 border-gray-400">
-      <button className="text-white" onClick={()=>{setIsRunning(!isRunning)}}>
-        {isRunning?"PAUSE":"PLAY"}
-      </button>
-      <button className="text-white" onClick={()=>{speed>1?setSpeed(1):setSpeed(1.5)}}>
-        {speed>1?"SLOWDOWN":"FAST"}
-      </button>
+    <div className="flex justify-evenly items-center mt-6 p-4 w-[600px] flex-wrap">
+      <ToggleButton className="text-white"
+        onClick={()=>{
+          update("isRunning", !state.isRunning, setState);
+        }}
+        inactive="Pause"
+        active="Play"
+      />
+      <ToggleButton className="text-white"
+        onClick={()=>{
+          update("speed", state.speed >= FAST_SPEED ? SLOW_SPEED : FAST_SPEED, setState);
+        }}
+        inactive="Fast"
+        active="Slow"
+      />
+      <ToggleButton className="text-white"
+        onClick={()=>{
+          update("showDebug", !state.showDebug, setState);
+        }}
+        inactive="Show Debug"
+        active="Hide Debug"
+      />
     </div>
   );
 }
-export default ControlPanel;
+
+function update<K extends keyof SimulationState>(
+  key:K,
+  value:SimulationState[K],
+  setState:React.Dispatch<React.SetStateAction<SimulationState>>
+) {
+  setState(prev => ({ ...prev, [key]: value }));
+}
+
