@@ -6,12 +6,12 @@ import type { SimulationState } from "./types/SimulationState";
 function App() {
   const [simState, setSimState] = useState<SimulationState>({
     isRunning: true,
-    speed: 0.01,
+    speed: 1,
     showDebug: false,
   });
 
   return (
-    <div className="min-h-screen bg-gray-700 flex flex-col justify-center items-center p-6">
+    <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center p-6 font-semibold font-sans">
       <Canvas
         state={simState}
         width={600}
