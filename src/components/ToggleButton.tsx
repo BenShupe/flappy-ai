@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  // onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: (_?:boolean)=>any;
   className?: string;
   active: string | React.ReactNode;
   inactive: string | React.ReactNode;
@@ -17,13 +18,14 @@ export default function ToggleButton({
 }: Props) {
   const [isActive, setIsActive] = useState(false);
 
+  const handleClick = () => {
+    const next = !isActive;
+    setIsActive(next);
+    onClick?.(next); // called once per click
+  };
+
   return (
-    <button className={className}
-      onClick={(e) => {
-        setIsActive(prev => !prev);
-        onClick?.(e);
-      }}
-      disabled={disabled}>
+    <button className={className} onClick={handleClick} disabled={disabled}>
       {isActive ? active : inactive}
     </button>
   );

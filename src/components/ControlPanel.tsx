@@ -1,15 +1,22 @@
 import ToggleButton from "./ToggleButton"
 import type { SimulationState } from "../types/SimulationState";
+import { useEffect } from "react";
 
 interface props {
   state: SimulationState;
   setState: React.Dispatch<React.SetStateAction<SimulationState>>;
 };
 
-const FAST_SPEED = 0.0015;
-const SLOW_SPEED = 0.001;
+const FAST_SPEED = 1.5;
+const NORMAL_SPEED = 1;
+// const SLOW_SPEED = 0.5;
 
 export default function ControlPanel ({state, setState}:props) {
+
+  useEffect(()=>{
+
+  }, [state])
+
   return (
     <div className="flex justify-evenly items-center mt-6 p-4 w-[600px] flex-wrap">
       <ToggleButton className="text-white"
@@ -20,18 +27,18 @@ export default function ControlPanel ({state, setState}:props) {
         active="Play"
       />
       <ToggleButton className="text-white"
-        onClick={()=>{
-          update("speed", state.speed >= FAST_SPEED ? SLOW_SPEED : FAST_SPEED, setState);
+        onClick={(isActive)=>{
+          update("speed", isActive ? FAST_SPEED : NORMAL_SPEED, setState);
         }}
-        inactive="Fast"
-        active="Slow"
+        inactive="Fast OFF"
+        active="Fast ON"
       />
       <ToggleButton className="text-white"
         onClick={()=>{
           update("showDebug", !state.showDebug, setState);
         }}
-        inactive="Show Debug"
-        active="Hide Debug"
+        inactive="Debug OFF"
+        active="Debug ON"
       />
     </div>
   );
