@@ -1,5 +1,5 @@
 import NeuralNetwork from "./NeuralNetwork"
-import { GRAVITY_PX_PER_MILLISECOND } from "./game";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, GRAVITY_PX_PER_MS_SQUARED } from "../global/contants";
 
 interface Config{
   x?: number;
@@ -21,15 +21,18 @@ export default class Bird {
   alive: boolean;
   hitSize: number;
 
+  public static readonly DEFAULT_HIT_SIZE = 50;
+  public static readonly DEFAULT_X_POSITION = CANVAS_WIDTH/3;
+
   constructor({x, y, velocity, brain, fitness, alive, hitSize}:Config = {}) {
     this.x= x ?? 200;
     this.y= y ?? 200;
     this.velocity= velocity ?? 0;
-    this.brain = brain ?? new NeuralNetwork(1, 1, 1);
+    this.brain = brain ?? NeuralNetwork.empty;
 
     this.fitness = fitness ?? 0;
     this.alive = alive ?? true;
-    this.hitSize = hitSize ?? 50;
+    this.hitSize = hitSize ?? Bird.DEFAULT_HIT_SIZE;
   }
 
   render(ctx:CanvasRenderingContext2D) {
@@ -41,14 +44,28 @@ export default class Bird {
     ctx.strokeRect(this.x, this.y, this.hitSize, this.hitSize);
   }
 
-  flap(strength:number = 0.55) {
+  flap(strength:number = 0.45) {
     this.velocity = -strength;
   }
 
   update(dt:number) {
     // eulers method
-    this.velocity += GRAVITY_PX_PER_MILLISECOND*dt;//px/ms
+    this.velocity += GRAVITY_PX_PER_MS_SQUARED*dt;//px/ms
     this.y = this.y + this.velocity*dt;//px
+    if(!this.isInBounds) this.alive = false;
+    else this.stay_in_bounds();
+  }
+
+  stay_in_bounds():void {
+    if(this.isInBounds()) return;
+    
+    this.velocity = 0;
+    if(this.y < 0) this.y = 0;
+    if(this.y > CANVAS_HEIGHT-this.hitSize) this.y = CANVAS_HEIGHT-this.hitSize;
+  }
+
+  isInBounds():boolean {
+    return this.y >= 0 && this.y+this.hitSize <= CANVAS_HEIGHT;
   }
 
   clone() {

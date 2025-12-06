@@ -8,6 +8,8 @@ export default class NeuralNetwork {
   biasH: number[];
   biasO: number[];
 
+  public static readonly empty = new NeuralNetwork(1, 1, 1);
+
   constructor(inputNodes:number, hiddenNodes:number, outputNodes: number) {
     // number of nodes there are
     this.inputNodes = inputNodes;

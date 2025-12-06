@@ -1,1 +1,18 @@
 @import "tailwindcss";
+
+.polka {
+  /* background-image: radial-gradient(rgba(123, 123, 123, 0.5) 2px, transparent 1px); */
+  background-image: url("../../public/assets/Frame\ 1.svg");
+  animation: move-polka 5s linear infinite;
+  background-size: 29px 48px;
+}
+
+@keyframes move-polka {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 29px 48px;
+  }
+}
