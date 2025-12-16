@@ -1,4 +1,4 @@
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../global/contants"
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../global/constants"
 
 interface Config {
   x : number,
@@ -23,31 +23,20 @@ export default class Pipe {
     const TOP_PART_HEIGHT = this.gapPosition;
     const BOTTOM_PART_POSITION = this.gapPosition + Pipe.AIR_GAP;
     const BOTTOM_PART_HEIGHT = CANVAS_HEIGHT - BOTTOM_PART_POSITION;
-  
-    const createGradient = (y: number, height: number) => {
-      const gradient = ctx.createLinearGradient(this.x, y, this.x + Pipe.WIDTH, y);
-      gradient.addColorStop(0, "#3F3F46"); // left highlight
-      gradient.addColorStop(0.5, "#2B2B30"); // base
-      gradient.addColorStop(0.75, "#1E1E22"); // right shadow
-      return gradient;
-    };
-  
-    // Top pipe
-    ctx.fillStyle = createGradient(TOP_PART_POSITION, TOP_PART_HEIGHT);
+
+    ctx.strokeStyle = "dark-grey"
     ctx.fillRect(this.x, TOP_PART_POSITION, Pipe.WIDTH, TOP_PART_HEIGHT);
-  
-    // Bottom pipe
-    ctx.fillStyle = createGradient(BOTTOM_PART_POSITION, BOTTOM_PART_HEIGHT);
     ctx.fillRect(this.x, BOTTOM_PART_POSITION, Pipe.WIDTH, BOTTOM_PART_HEIGHT);
-  
-    // Outline
-    // ctx.strokeStyle = "#000000";
-    // ctx.lineWidth = 1;
-    // ctx.strokeRect(this.x, TOP_PART_POSITION, Pipe.WIDTH, TOP_PART_HEIGHT);
-    // ctx.strokeRect(this.x, BOTTOM_PART_POSITION, Pipe.WIDTH, BOTTOM_PART_HEIGHT);
+
+    ctx.strokeStyle = "white"
+    ctx.lineWidth = 2;
+    ctx.strokeRect(this.x, TOP_PART_POSITION, Pipe.WIDTH, TOP_PART_HEIGHT);
+    ctx.strokeRect(this.x, BOTTOM_PART_POSITION, Pipe.WIDTH, BOTTOM_PART_HEIGHT);
   }
-  
-  
+
+  getGapPosition() {
+    return this.gapPosition;
+  }
 
   update(dt:number) {
     this.x += Pipe.PIPE_SPEED_PX_PER_MS*dt;

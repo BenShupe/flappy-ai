@@ -1,5 +1,5 @@
 import NeuralNetwork from "./NeuralNetwork"
-import { CANVAS_HEIGHT, CANVAS_WIDTH, GRAVITY_PX_PER_MS_SQUARED } from "../global/contants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, GRAVITY_PX_PER_MS_SQUARED } from "../global/constants";
 
 interface Config{
   x?: number;
@@ -52,11 +52,12 @@ export default class Bird {
     // eulers method
     this.velocity += GRAVITY_PX_PER_MS_SQUARED*dt;//px/ms
     this.y = this.y + this.velocity*dt;//px
-    if(!this.isInBounds) this.alive = false;
-    else this.stay_in_bounds();
+    if(!this.isInBounds()) this.kill();
+    this.enforceBounds();
+    this.fitness += dt;
   }
 
-  stay_in_bounds():void {
+  enforceBounds():void {
     if(this.isInBounds()) return;
     
     this.velocity = 0;
@@ -67,6 +68,10 @@ export default class Bird {
   isInBounds():boolean {
     return this.y >= 0 && this.y+this.hitSize <= CANVAS_HEIGHT;
   }
+
+  kill() {
+    this.alive = false;
+  }  
 
   clone() {
     return new Bird({

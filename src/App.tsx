@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Canvas from "./components/Canvas";
 import ControlPanel from "./components/ControlPanel";
 import type { SimulationState } from "./types/SimulationState";
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SET_CANVAS_HEIGHT, SET_CANVAS_WIDTH } from "./global/contants";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, SET_CANVAS_HEIGHT, SET_CANVAS_WIDTH } from "./global/constants";
 
 function App() {
   const [simState, setSimState] = useState<SimulationState>({

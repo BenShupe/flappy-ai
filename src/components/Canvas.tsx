@@ -30,9 +30,7 @@ export default function Canvas({
     const loop = (t: number) => {
       const dt = calcDelta(t, last)*state.speed;
       last = t;
-
       renderFrame(ctx, dt, state, width, height);
-
       frameRef.current = requestAnimationFrame(loop);
     };
 
@@ -58,7 +56,6 @@ function renderFrame(
   height: number
 ) {
   clearCanvas(ctx, width, height);
-
   
   if (state.isRunning) Game.update(dt);
   Game.render(ctx);
@@ -66,8 +63,4 @@ function renderFrame(
 
 function clearCanvas(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.clearRect(0, 0, w, h);
-}
-
-function formatSpeed(speed: number) {
-  return `x${speed}`;
 }
